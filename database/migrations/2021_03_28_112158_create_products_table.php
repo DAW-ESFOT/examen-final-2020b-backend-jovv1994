@@ -19,6 +19,10 @@ class CreateProductsTable extends Migration
             $table->string('code', 80);
             $table->double('price');
             $table->enum('status', ['active','deleted']);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('restrict');
             $table->timestamps();
         });
     }
@@ -33,3 +37,4 @@ class CreateProductsTable extends Migration
         Schema::dropIfExists('products');
     }
 }
+

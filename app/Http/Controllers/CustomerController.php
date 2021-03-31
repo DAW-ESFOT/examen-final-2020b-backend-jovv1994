@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\Http\Resources\Customer as CustomerResource;
+use App\Http\Resources\CustomerCollection;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -14,8 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return response()->json(Customer::all(), 200);
-
+        return new CustomerCollection(Customer::paginate());
     }
 
     /**
@@ -26,6 +27,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        //VALIDACIONES
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'lastname' => 'required|string',
+            'document' => 'required|string|max:10',
+        ]);
+
         $customer = Customer::create($request->all());
         return response()->json($customer, 201);
     }
@@ -38,7 +46,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return response()->json($customer, 200);
+        return response()->json(new CustomerResource($customer),200);
     }
 
     /**
