@@ -34,6 +34,7 @@ class ProductController extends Controller
         return response()->json(new ProductResource($product), 200);
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
